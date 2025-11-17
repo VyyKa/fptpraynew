@@ -30,7 +30,11 @@ export async function appendPrayerToDoc(payload: PrayerPayload) {
     .env.GOOGLE_PRIVATE_KEY!.replace(/\\n/g, "\n")
     .trim();
 
-  const auth = new google.auth.JWT(clientEmail, undefined, privateKey, DOCS_SCOPE);
+  const auth = new google.auth.JWT({
+    email: clientEmail,
+    key: privateKey,
+    scopes: DOCS_SCOPE,
+  });
   const docs = google.docs({ version: "v1", auth });
 
   const timestamp = new Intl.DateTimeFormat("vi-VN", {

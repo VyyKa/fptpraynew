@@ -52,6 +52,24 @@ body {
   text-transform: uppercase;
   letter-spacing: 0.4em;
   cursor: pointer;
+  position: relative;
+  z-index: 1;
+  overflow: hidden;
+  border-radius: 999px;
+}
+
+.pray-button-tooltip {
+  overflow: visible;
+}
+
+.pray-button-default {
+  background: #d66b00;
+  color: #fff;
+  letter-spacing: 0.4em;
+}
+
+.pray-button-default:hover {
+  background: #bf5c00;
 }
 
 .pray-button-wrapper {
@@ -60,6 +78,7 @@ body {
   border-radius: 999px;
   padding: 2px;
   overflow: hidden;
+  z-index: 1;
 }
 
 .pray-button-wrapper::before {
@@ -87,20 +106,122 @@ body {
   animation: praySheen 2.6s linear infinite;
 }
 
-.pray-button {
-  position: relative;
-  z-index: 1;
+.pray-button-wrapper.passed {
+  padding: 3px;
+  overflow: visible;
+  z-index: 2;
 }
 
-@keyframes praySheen {
+.pray-button-wrapper.passed::before {
+  opacity: 1;
+  background: linear-gradient(120deg, #43ffba, #1bd27b 40%, #0a8c46 70%, #1bd27b);
+  filter: blur(10px);
+}
+
+.pray-button-wrapper.passed::after {
+  border: 2px solid rgba(22, 110, 65, 0.45);
+  box-shadow: 0 12px 28px rgba(19, 86, 49, 0.35);
+}
+
+.pray-button-pass {
+  background: linear-gradient(135deg, #2abf6d 0%, #1f9d58 35%, #0f6d3c 100%);
+  color: #fff;
+  letter-spacing: 0.32em;
+  box-shadow:
+    0 18px 35px rgba(19, 86, 49, 0.45),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.25);
+  border: 1px solid rgba(17, 77, 45, 0.3);
+  transform: translateY(-1px);
+  animation: passButtonPulse 3s ease-in-out infinite;
+}
+
+.pray-button-pass::after {
+  content: "";
+  position: absolute;
+  inset: -25% -50% -25% -50%;
+  background: linear-gradient(
+    120deg,
+    rgba(255, 255, 255, 0),
+    rgba(255, 255, 255, 0.6),
+    rgba(255, 255, 255, 0)
+  );
+  transform: translateX(-120%) skewX(-15deg);
+  animation: passButtonSheen 2s linear infinite;
+  pointer-events: none;
+}
+
+.passed-label {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5em;
+  z-index: 2;
+}
+
+.passed-label::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  bottom: calc(100% + 10px);
+  left: 50%;
+  transform: translate(-50%, 8px);
+  padding: 6px 12px;
+  border-radius: 999px;
+  background: rgba(214, 107, 0, 0.95);
+  color: #fff9f0;
+  font-size: 0.65rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: none;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition:
+    opacity 0.25s ease,
+    transform 0.25s ease;
+}
+
+.passed-label::before {
+  content: "";
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translate(-50%, 4px);
+  width: 10px;
+  height: 10px;
+  background: rgba(214, 107, 0, 0.95);
+  clip-path: polygon(50% 100%, 0 0, 100% 0);
+  opacity: 0;
+  transition:
+    opacity 0.25s ease,
+    transform 0.25s ease;
+}
+
+.passed-label:hover::after,
+.passed-label:hover::before {
+  opacity: 1;
+  transform: translate(-50%, 0);
+}
+
+@keyframes passButtonSheen {
   0% {
-    transform: translateX(-100%);
-  }
-  50% {
-    transform: translateX(100%);
+    transform: translateX(-120%) skewX(-15deg);
   }
   100% {
-    transform: translateX(200%);
+    transform: translateX(120%) skewX(-15deg);
+  }
+}
+
+@keyframes passButtonPulse {
+  0%,
+  100% {
+    box-shadow:
+      0 18px 35px rgba(19, 86, 49, 0.45),
+      inset 0 0 0 1px rgba(255, 255, 255, 0.25);
+  }
+  50% {
+    box-shadow:
+      0 20px 45px rgba(19, 86, 49, 0.55),
+      inset 0 0 0 1px rgba(255, 255, 255, 0.4);
   }
 }
 
@@ -114,54 +235,178 @@ body {
   position: absolute;
   bottom: 165px;
   left: 50%;
-  transform: translate(-50%, -120px);
-  width: 45px;
-  filter: drop-shadow(0 10px 18px rgba(217, 111, 0, 0.45));
+  transform: translate(-50%, -130px);
+  width: 36px;
+  filter: drop-shadow(0 8px 16px rgba(255, 175, 80, 0.55));
   opacity: 0;
   transform-origin: bottom center;
   transition:
-    opacity 0.5s ease,
-    transform 2s ease;
+    opacity 0.6s ease,
+    transform 2.4s ease;
+}
+
+.incense-bundle::after {
+  content: "";
+  position: absolute;
+  inset: 8% 12% -18%;
+  border-radius: 999px;
+  background: radial-gradient(
+    circle at 50% 10%,
+    rgba(255, 255, 255, 0.8),
+    rgba(255, 230, 170, 0.5),
+    transparent 70%
+  );
+  pointer-events: none;
 }
 
 .incense-bundle.active {
   opacity: 1;
-  transform: translate(-50%, 0);
+  transform: translate(-50%, -6px);
 }
 
 .smoke-plume {
   position: absolute;
-  bottom: 130px;
+  bottom: 182px;
   left: 50%;
-  width: 110px;
-  height: 340px;
+  width: 160px;
+  height: 360px;
   transform: translateX(-50%);
-  background: radial-gradient(
-    circle at 50% 100%,
-    rgba(0, 0, 0, 0.5),
-    rgba(0, 0, 0, 0.15) 55%,
-    transparent 80%
-  );
-  filter: blur(18px);
+  pointer-events: none;
   opacity: 0;
-  animation: smokeDrift 7s ease-in-out infinite;
+  transition: opacity 0.6s ease;
 }
 
 .smoke-plume::after {
   content: "";
   position: absolute;
-  inset: -35px;
+  inset: -20px -40px 0;
   background: radial-gradient(
     circle at 50% 100%,
-    rgba(0, 0, 0, 0.4),
-    rgba(0, 0, 0, 0.08),
+    rgba(25, 27, 32, 0.45),
+    rgba(42, 47, 55, 0.15) 60%,
     transparent 85%
   );
-  filter: blur(30px);
+  filter: blur(26px);
+  opacity: 0.55;
+}
+
+.smoke-plume::before {
+  content: "";
+  position: absolute;
+  bottom: -4px;
+  left: 50%;
+  width: 24px;
+  height: 24px;
+  transform: translateX(-50%);
+  background: radial-gradient(
+    circle,
+    rgba(255, 255, 255, 0.4),
+    rgba(244, 180, 120, 0.35),
+    transparent 70%
+  );
+  filter: blur(6px);
+  opacity: 0.9;
 }
 
 .smoke-plume.active {
   opacity: 1;
+}
+
+.smoke-thread {
+  position: absolute;
+  bottom: -6px;
+  left: 50%;
+  width: 140px;
+  height: 280px;
+  border-radius: 999px;
+  background: radial-gradient(
+      circle at 50% 100%,
+      rgba(255, 255, 255, 0.55),
+      rgba(190, 210, 222, 0.25) 35%,
+      rgba(90, 110, 128, 0.15) 55%,
+      transparent 90%
+    ),
+    radial-gradient(
+      circle at 40% 0%,
+      rgba(255, 255, 255, 0.4),
+      transparent 60%
+    );
+  clip-path: polygon(49% 100%, 51% 100%, 55% 90%, 60% 70%, 54% 47%, 61% 30%, 53% 12%, 50% 0, 47% 12%, 39% 30%, 46% 47%, 40% 70%, 45% 90%);
+  opacity: 0;
+  transform-origin: bottom center;
+  filter: blur(3px);
+  mix-blend-mode: screen;
+  animation-duration: 8s;
+  animation-iteration-count: infinite;
+  animation-timing-function: ease-in-out;
+  animation-play-state: paused;
+  animation-fill-mode: both;
+}
+
+.smoke-plume.active .smoke-thread {
+  animation-play-state: running;
+}
+
+.thread-1 {
+  animation-name: smokePathA;
+  animation-delay: 0s;
+}
+
+.thread-2 {
+  animation-name: smokePathB;
+  animation-delay: -1.5s;
+  clip-path: polygon(49% 100%, 51% 100%, 57% 87%, 64% 62%, 55% 40%, 67% 18%, 58% 0, 50% 0, 42% 12%, 36% 34%, 45% 55%, 38% 72%, 44% 90%);
+}
+
+.thread-3 {
+  animation-name: smokePathC;
+  animation-delay: -3s;
+  clip-path: polygon(49% 100%, 51% 100%, 60% 85%, 58% 60%, 66% 40%, 54% 12%, 50% 0, 45% 10%, 35% 32%, 43% 50%, 37% 70%, 42% 90%);
+}
+
+.thread-4 {
+  animation-name: smokePathD;
+  animation-duration: 9s;
+  animation-delay: -4.5s;
+  clip-path: polygon(49% 100%, 51% 100%, 58% 86%, 62% 64%, 68% 44%, 60% 18%, 52% 0, 46% 12%, 37% 34%, 46% 52%, 40% 72%, 46% 90%);
+}
+
+.thread-5 {
+  animation-name: smokePathE;
+  animation-duration: 7.2s;
+  animation-delay: -6s;
+  clip-path: polygon(49% 100%, 51% 100%, 55% 88%, 63% 66%, 57% 44%, 65% 18%, 55% 0, 48% 10%, 36% 30%, 44% 48%, 39% 70%, 45% 90%);
+}
+
+.thread-6 {
+  animation-name: smokePathA;
+  animation-duration: 8.4s;
+  animation-delay: -2.3s;
+  opacity: 0.85;
+  filter: blur(4px);
+}
+
+.thread-7 {
+  animation-name: smokePathB;
+  animation-duration: 9.2s;
+  animation-delay: -5s;
+  opacity: 0.75;
+  filter: blur(2.5px);
+}
+
+.thread-8 {
+  animation-name: smokePathC;
+  animation-duration: 7.8s;
+  animation-delay: -7.2s;
+  opacity: 0.8;
+}
+
+.thread-9 {
+  animation-name: smokePathD;
+  animation-duration: 8.6s;
+  animation-delay: -1s;
+  opacity: 0.7;
+  filter: blur(3.5px);
 }
 
 .petal-layer {
@@ -209,21 +454,108 @@ body {
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
 }
 
-@keyframes smokeDrift {
+@keyframes smokePathA {
   0% {
-    transform: translate(-50%, 0) scale(0.75) skewX(-1deg);
+    opacity: 0;
+    transform: translate(-50%, 0) scale(0.35) rotate(0deg);
+    filter: blur(5px);
   }
-  25% {
-    transform: translate(-53%, -40px) scale(0.9) skewX(-2deg);
+  15% {
+    opacity: 0.8;
   }
-  50% {
-    transform: translate(-48%, -80px) scale(1.05) skewX(1deg);
+  45% {
+    transform: translate(-60%, -110px) scale(0.7) rotate(-4deg);
   }
-  75% {
-    transform: translate(-44%, -130px) scale(1.2) skewX(2deg);
+  80% {
+    transform: translate(-48%, -220px) scale(0.95) rotate(6deg);
+    opacity: 0.7;
   }
   100% {
-    transform: translate(-40%, -190px) scale(1.35) skewX(-1deg);
+    transform: translate(-34%, -340px) scale(1.05) rotate(-2deg);
+    opacity: 0;
+  }
+}
+
+@keyframes smokePathB {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, 0) scale(0.32) rotate(2deg);
+  }
+  20% {
+    opacity: 0.85;
+  }
+  50% {
+    transform: translate(-42%, -140px) scale(0.65) rotate(-6deg);
+  }
+  90% {
+    transform: translate(-60%, -260px) scale(0.95) rotate(4deg);
+    opacity: 0.8;
+  }
+  100% {
+    transform: translate(-68%, -340px) scale(1.08) rotate(-3deg);
+    opacity: 0;
+  }
+}
+
+@keyframes smokePathC {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, 0) scale(0.28) rotate(-1deg);
+  }
+  10% {
+    opacity: 0.8;
+  }
+  40% {
+    transform: translate(-55%, -120px) scale(0.6) rotate(5deg);
+  }
+  75% {
+    transform: translate(-45%, -230px) scale(0.9) rotate(-6deg);
+  }
+  100% {
+    transform: translate(-32%, -350px) scale(1.05) rotate(3deg);
+    opacity: 0;
+  }
+}
+
+@keyframes smokePathD {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, 0) scale(0.3) rotate(-2deg);
+  }
+  18% {
+    opacity: 0.75;
+  }
+  45% {
+    transform: translate(-58%, -150px) scale(0.65) rotate(4deg);
+  }
+  80% {
+    transform: translate(-36%, -260px) scale(0.95) rotate(-3deg);
+    opacity: 0.7;
+  }
+  100% {
+    transform: translate(-28%, -360px) scale(1.08) rotate(2deg);
+    opacity: 0;
+  }
+}
+
+@keyframes smokePathE {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, 0) scale(0.33) rotate(1deg);
+  }
+  12% {
+    opacity: 0.85;
+  }
+  55% {
+    transform: translate(-44%, -170px) scale(0.7) rotate(-5deg);
+  }
+  85% {
+    transform: translate(-62%, -250px) scale(0.9) rotate(6deg);
+    opacity: 0.65;
+  }
+  100% {
+    transform: translate(-50%, -340px) scale(1.05) rotate(-2deg);
+    opacity: 0;
   }
 }
 

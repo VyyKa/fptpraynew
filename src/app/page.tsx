@@ -306,7 +306,11 @@ export default function Home() {
             }}
           />
 
-          <div className={`smoke-plume ${showOffering ? "active" : ""}`} />
+          <div className={`smoke-plume ${showOffering ? "active" : ""}`}>
+            {Array.from({ length: 9 }).map((_, index) => (
+              <span key={index} className={`smoke-thread thread-${index + 1}`} />
+            ))}
+          </div>
           <p className="absolute -bottom-6 left-1/2 -translate-x-1/2 text-[8px] uppercase tracking-[0.35em] text-[#c96a00] whitespace-nowrap">
             FPTPRAY BY VYYKA
           </p>
@@ -339,13 +343,28 @@ export default function Home() {
             className="h-36 resize-none rounded border border-[#d9a05d] px-4 py-3 text-base outline-none focus:border-[#c16900]"
           />
 
-          <div className={`pray-button-wrapper mt-1 ${lastWish ? "active" : ""}`}>
+          <div
+            className={`pray-button-wrapper mt-1 ${
+              lastWish ? "active passed" : ""
+            }`}
+          >
             <button
               type="submit"
               disabled={status === "sending"}
-              className="pray-button h-12 w-full rounded bg-[#d66b00] px-6 text-base text-white transition hover:bg-[#bf5c00] disabled:cursor-not-allowed disabled:opacity-60"
+              className={`pray-button h-12 w-full rounded px-6 text-base text-white transition disabled:cursor-not-allowed disabled:opacity-60 ${
+                lastWish ? "pray-button-pass pray-button-tooltip" : "pray-button-default"
+              }`}
             >
-              {status === "sending" ? "Đang thắp hương..." : "Thắp hương"}
+              <span
+                className={lastWish ? "passed-label" : undefined}
+                data-tooltip="Điều quan trọng phải nói 3 lần"
+              >
+                {lastWish
+                  ? "~~~ PASSED ~~~ PASSED ~~~ PASSED ~~~"
+                  : status === "sending"
+                    ? "Đang thắp hương..."
+                    : "Thắp hương"}
+              </span>
             </button>
           </div>
 

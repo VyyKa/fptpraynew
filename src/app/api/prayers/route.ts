@@ -14,33 +14,30 @@ export async function POST(request: Request) {
     const body = await request.json();
     const payload = payloadSchema.parse(body);
 
-    const webhookUrl = process.env.N8N_WEBHOOK_URL;
-    const webhookSecret = process.env.N8N_WEBHOOK_SECRET;
-
-    if (!webhookUrl) {
-      throw new Error("Missing N8N_WEBHOOK_URL env.");
-    }
-
-    const headers: Record<string, string> = {
-      "Content-Type": "application/json",
-    };
-
-    if (webhookSecret) {
-      headers["x-webhook-secret"] = webhookSecret;
-    }
-
-    const webhookResponse = await fetch(webhookUrl, {
-      method: "POST",
-      headers,
-      body: JSON.stringify(payload),
-      cache: "no-store",
-    });
-
-    if (!webhookResponse.ok) {
-      const text = await webhookResponse.text();
-      throw new Error(
-        `n8n workflow error: ${webhookResponse.status} ${text.slice(0, 200)}`,
-      );
+    if (!process.env.N8N_WEBHOOK_URL) {
+      console.warn("N8N webhook not configured. Skipping remote logging.");
+    } else {
+      const headers: Record<string, string> = {
+        "Content-Type": "application/json",
+      };
+      if (process.env.N8N_WEBHOOK_SECRET) {
+        headers["x-webhook-secret"] = process.env.N8N_WEBHOOK_SECRET;
+      }
+      try {
+        const resp = await fetch(process.env.N8N_WEBHOOK_URL, {
+          method: "POST",
+          headers,
+          body: JSON.stringify(payload),
+          cache: "no-store",
+        });
+        if (!resp.ok) {
+          console.error(
+            `n8n webhook responded ${resp.status}. Ignoring and returning success.`,
+          );
+        }
+      } catch (hookError) {
+        console.error("n8n webhook call failed:", hookError);
+      }
     }
 
     return NextResponse.json({ success: true });

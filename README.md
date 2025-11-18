@@ -42,6 +42,7 @@ npm start
 | --- | --- |
 | `N8N_WEBHOOK_URL` | URL webhook của workflow n8n (ví dụ: `https://eclatduteint.vn/webhook/get-email`). |
 | `N8N_WEBHOOK_SECRET` _(optional)_ | Secret header gửi kèm (đặt trong webhook node). |
+| `NEXT_PUBLIC_GAS_WEBAPP_URL` _(optional)_ | URL Google Apps Script Web App dùng để ghi trực tiếp vào Google Sheets. Nếu khai báo biến này, FE sẽ gửi payload thẳng tới GAS. |
 | `NEXT_PUBLIC_SITE_URL` _(optional)_ | URL deploy thực tế, giúp Next.js tạo metadata tuyệt đối. |
 
 Tạo file `.env.local` ở gốc dự án và điền các giá trị trên (file `.env*` đã bị ignore).

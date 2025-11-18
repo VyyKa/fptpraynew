@@ -161,21 +161,40 @@ export default function Home() {
     setFeedback(null);
 
     try {
-      const response = await fetch("/api/prayers", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ email: normalizedEmail, wish: normalizedWish }),
-      });
+      const gasEndpoint = process.env.NEXT_PUBLIC_GAS_WEBAPP_URL;
+      if (gasEndpoint) {
+        await fetch(gasEndpoint, {
+          method: "POST",
+          mode: "no-cors",
+          cache: "no-cache",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            email: normalizedEmail,
+            monguoc: normalizedWish,
+          }),
+        });
+      } else {
+        const response = await fetch("/api/prayers", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            email: normalizedEmail,
+            wish: normalizedWish,
+          }),
+        });
 
-      if (!response.ok) {
-        const data = (await response.json().catch(() => null)) as
-          | { message?: string }
-          | null;
-        throw new Error(
-          data?.message ?? "Không thể gửi lời nguyện. Thử lại nhé!",
-        );
+        if (!response.ok) {
+          const data = (await response.json().catch(() => null)) as
+            | { message?: string }
+            | null;
+          throw new Error(
+            data?.message ?? "Không thể gửi lời nguyện. Thử lại nhé!",
+          );
+        }
       }
 
       setStatus("success");

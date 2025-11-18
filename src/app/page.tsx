@@ -90,6 +90,10 @@ export default function Home() {
       return;
     }
 
+    if (typeof window !== "undefined" && window.innerWidth <= 768) {
+      return;
+    }
+
     let redirected = false;
     const triggerRedirect = () => {
       if (redirected) {

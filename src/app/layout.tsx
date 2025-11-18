@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Analytics } from "@vercel/analytics/react";
 import { Geist, Geist_Mono, Be_Vietnam_Pro } from "next/font/google";
 import "./globals.css";
 
@@ -45,6 +46,7 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} ${beVietnam.variable} font-be-vietnam bg-[#03010c] text-white antialiased`}
       >
         {children}
+        <Analytics />
       </body>
     </html>
   );

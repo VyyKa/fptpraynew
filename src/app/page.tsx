@@ -296,13 +296,13 @@ export default function Home() {
           <Image
             src="/bonhang.png"
             alt="Bó nhang"
-            width={90}
+            width={60}
             height={220}
             className={`incense-bundle ${showOffering ? "active" : ""}`}
             priority
             style={{
-              height: showOffering ? "200px" : "60px",
-              transition: "height 6s ease",
+              height: showOffering ? "170px" : "80px",
+              transition: "height 1.8s ease",
             }}
           />
 

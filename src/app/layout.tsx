@@ -20,9 +20,14 @@ const beVietnam = Be_Vietnam_Pro({
 });
 
 export const metadata: Metadata = {
-  title: "FPT Pray | Bàn thờ số",
+  title: "FPT Pray",
   description:
     "Nhập email và lời nguyện, thắp nhang online, lưu lại vào Google Docs.",
+  icons: {
+    icon: "/favicon.png",
+    shortcut: "/favicon.png",
+    apple: "/favicon.png",
+  },
   metadataBase:
     process.env.NEXT_PUBLIC_SITE_URL !== undefined
       ? new URL(process.env.NEXT_PUBLIC_SITE_URL)

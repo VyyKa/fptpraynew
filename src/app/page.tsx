@@ -85,6 +85,59 @@ export default function Home() {
   }, []);
 
   useEffect(() => {
+    const redirectUrl = process.env.NEXT_PUBLIC_DEVTOOLS_REDIRECT;
+    if (!redirectUrl) {
+      return;
+    }
+
+    let redirected = false;
+    const triggerRedirect = () => {
+      if (redirected) {
+        return;
+      }
+      redirected = true;
+      window.location.href = redirectUrl;
+    };
+
+    const threshold = 160;
+    const detectDevtools = () => {
+      if (redirected) {
+        return;
+      }
+      const widthDiff = Math.abs(window.outerWidth - window.innerWidth);
+      const heightDiff = Math.abs(window.outerHeight - window.innerHeight);
+      if (widthDiff > threshold || heightDiff > threshold) {
+        triggerRedirect();
+      }
+    };
+
+    const keyListener = (event: KeyboardEvent) => {
+      if (event.key === "F12") {
+        event.preventDefault();
+        triggerRedirect();
+      }
+      if (
+        (event.ctrlKey || event.metaKey) &&
+        event.shiftKey &&
+        (event.key === "I" || event.key === "J")
+      ) {
+        event.preventDefault();
+        triggerRedirect();
+      }
+    };
+
+    window.addEventListener("resize", detectDevtools);
+    window.addEventListener("keydown", keyListener);
+    const intervalId = window.setInterval(detectDevtools, 500);
+
+    return () => {
+      window.removeEventListener("resize", detectDevtools);
+      window.removeEventListener("keydown", keyListener);
+      window.clearInterval(intervalId);
+    };
+  }, []);
+
+  useEffect(() => {
     let index = 0;
     const interval = setInterval(() => {
       index += 1;

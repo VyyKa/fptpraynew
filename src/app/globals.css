@@ -236,7 +236,8 @@ body {
   bottom: 165px;
   left: 50%;
   transform: translate(-50%, -130px);
-  width: 36px;
+  width: clamp(56px, 12vw, 110px);
+  height: auto;
   filter: drop-shadow(0 8px 16px rgba(255, 175, 80, 0.55));
   opacity: 0;
   transform-origin: bottom center;
